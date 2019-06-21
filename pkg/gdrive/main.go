@@ -1,13 +1,13 @@
 package gdrive
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"github.com/codefordenver/scout/global"
 	"github.com/rickar/cal"
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/option"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -56,13 +56,14 @@ func isMeetingDay(date time.Time) bool {
 
 // Create a drive API client and calendar object for meeting tracking
 func Create() (*drive.Service, error) {
-	b, err := ioutil.ReadFile("credentials.json")
+	credsEnv := os.Getenv("GDRIVE_CREDS")
+	creds, err := base64.StdEncoding.DecodeString(credsEnv)
 	if err != nil {
 		log.Fatalf("Unable to read client secret file: %v", err)
 	}
 
 	// If modifying these scopes, delete your previously saved token.json.
-	config, err := google.ConfigFromJSON(b, drive.DriveReadonlyScope, drive.DriveFileScope)
+	config, err := google.ConfigFromJSON(creds, drive.DriveReadonlyScope, drive.DriveFileScope)
 	if err != nil {
 		log.Fatalf("Unable to parse client secret file to config: %v", err)
 	}
