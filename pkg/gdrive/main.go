@@ -98,6 +98,7 @@ func getClient(config *oauth2.Config) *http.Client {
 		if tokenEnv == "" {
 			tok = getTokenFromWeb(config)
 			saveToken(tokFile, tok)
+			return config.Client(context.Background(), tok)
 		}
 
 		dToken, err := base64.StdEncoding.DecodeString(tokenEnv)
