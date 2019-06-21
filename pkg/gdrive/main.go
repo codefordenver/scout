@@ -97,20 +97,20 @@ func getClient(config *oauth2.Config) *http.Client {
 		tokenEnv := os.Getenv("GDRIVE_ACCESS_TOKEN")
 		if tokenEnv == "" {
 			tok = getTokenFromWeb(config)
-			saveToken(tokFile, tok)
-			return config.Client(context.Background(), tok)
-		}
+		} else {
+			dToken, err := base64.StdEncoding.DecodeString(tokenEnv)
+			if err != nil {
+				log.Fatalf("Unable to read client secret file: %v", err)
+			}
 
-		dToken, err := base64.StdEncoding.DecodeString(tokenEnv)
-		if err != nil {
-			log.Fatalf("Unable to read client secret file: %v", err)
+			tok := &oauth2.Token{}
+			r := bytes.NewReader(dToken)
+			err = json.NewDecoder(r).Decode(tok)
 		}
-
-		tok := &oauth2.Token{}
-		r := bytes.NewReader(dToken)
-		err = json.NewDecoder(r).Decode(tok)
-		saveToken(tokFile, tok)
 	}
+
+	fmt.Printf("token: %v", tok)
+	saveToken(tokFile, tok)
 	return config.Client(context.Background(), tok)
 }
 
