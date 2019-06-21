@@ -106,11 +106,9 @@ func getClient(config *oauth2.Config) *http.Client {
 			tok = &oauth2.Token{}
 			r := bytes.NewReader(dToken)
 			err = json.NewDecoder(r).Decode(tok)
-			fmt.Printf("token: %+v\n", tok)
 		}
 	}
 
-	fmt.Printf("token: %+v", tok)
 	saveToken(tokFile, tok)
 	return config.Client(context.Background(), tok)
 }
