@@ -157,6 +157,12 @@ func Create() (*discordgo.Session, error) {
 		Permission: PermissionMembers,
 	}
 	cmdHandler.RegisterCommand(fetchFileCommand)
+	listCommand := Command{
+		Keyword:    "list-projects",
+		Handler:    listProjects,
+		Permission: PermissionChannel,
+	}
+	cmdHandler.RegisterCommand(listCommand)
 	joinCommand := Command{
 		Keyword:    "join",
 		Handler:    joinProject,
@@ -357,6 +363,24 @@ func fetchFile(data CommandData) {
 	message := gdrive.FetchFile(fileName)
 	if _, err := data.Session.ChannelMessageSend(data.MessageData.ChannelID, message); err != nil {
 		fmt.Println("error sending file message,", err)
+	}
+}
+
+func listProjects(data CommandData) {
+	if channels, err := data.Session.GuildChannels(data.GuildID); err != nil {
+		fmt.Println("error fetching guild channels,", err)
+	} else {
+		projectsMessage := "Current projects at `" + "codefordenver" + "`:"
+		for _, channel := range channels {
+			if channel.ParentID == global.ProjectCategoryId {
+				projectsMessage += "\n" + channel.Name
+			}
+		}
+		if channel, err := data.Session.UserChannelCreate(data.Author.ID); err != nil {
+			fmt.Println("error creating DM channel,", err)
+		} else if _, err := data.Session.ChannelMessageSend(channel.ID, projectsMessage); err != nil {
+			fmt.Println("error sending projects list,", err)
+		}
 	}
 }
 
