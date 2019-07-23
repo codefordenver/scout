@@ -1,0 +1,15 @@
+- GuildID: "535670168270143488"
+  ProjectCategoryID: "535677766457360394"
+  EveryoneRole: "535670168270143488" #Yes, this is the same as the GuildID, they are separated for clarity
+  NewRole: "573872261619122198"
+  OnboardingRole: "578321226586652692"
+  MemberRole: "572626163248267274"
+  OnboardingInviteCode: "aKVgZSN"
+  CodeOfConductMessageID: "580205135112830994"
+  AgendaFolderID: "1NL1M9G0iJVwNDa7kRL1rqypUnafz6WfA"
+  LocationString: "America/Denver"
+  Files:
+    attendance: "1gj-Se7U4wUFLzNsVhVJol5mS1JsbMRPTT59z878O0KY"
+    onboarding: "1Jj97b0PdM2RC1kXXmyt3RL81u3NvUqt0KK2TW4m3KJE"
+  GithubOrg: "codefordenver"
+  IssueEmoji: "➡"
